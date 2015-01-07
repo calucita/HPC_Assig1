@@ -26,7 +26,7 @@ do
 					./matmult_f.gcc $mode $order $m $n $k >> "$mode"_"$order"."$LOGEXT"
 				done
 			else
-				echo ./matmult_f.gcc $mode $m $n $k >> $mode."$LOGEXT"
+				./matmult_f.gcc $mode $m $n $k >> $mode."$LOGEXT"
 			fi
 			k=$(($k+20))
 			done
