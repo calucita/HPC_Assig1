@@ -1,19 +1,44 @@
 #!/bin/bash
+
+#hello!
+#POTATOES!
+
+
 #PBS -q hpcintro
 #PBS -N log
 #PBS -l feature=XeonX5550
 #PBS -l walltime=20:00
 LOOPS=10000
-OPTS=("nat nmk" "nat nkm" "nat mnk" "nat mkn" "nat kmn" "nat knm" "lib" "blk")
-
-NPARTS="500 1000 2000 3000 4000 5000 7500 10000 15000 200000"
+OPTS=("nat" "lib" "blk")
+MNK=("nmk" "nkm" "mnk" "mkn" "kmn" "knm") 
 LOGEXT=dat
-
-/bin/rm -f external.$LOGEXT internal.$LOGEXT
-for particles in $NPARTS
+#/bin/rm -f external.$LOGEXT internal.$LOGEXT
+for mode in "${OPTS[@]}"
 do
-    ./external $LOOPS $particles | grep -v CPU >> external.$LOGEXT
-    ./internal $LOOPS $particles | grep -v CPU >> internal.$LOGEXT
+	n=20
+	while [ $n -lt 100 ] 
+	do
+	m=20
+		while [ $m -lt 100 ]
+		do	
+		k=20
+			while [ $k -lt 100 ]
+			do
+			if [ "nat" = "$mode" ]
+			then
+				for order in "${MNK[@]}"
+				do
+					echo "./matmult_f.gcc $mode $order $m $n $k"
+				done
+			else
+				echo "./matmult_f.gcc $mode $m $n $k" 
+			fi
+			k=$(($k+20))
+			done
+		m=$(($m+20))
+		done
+	n=$(($n+20))
+	done
 done
 
 # time to say 'Good bye' ;-)
