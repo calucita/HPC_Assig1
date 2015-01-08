@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sunperf.h>
+#include <math.h>
+
+#define min(a,b)(((a)<(b))?(a):(b))
 
 
 void matmult_lib(int m, int n, int k, double **A, double **B, double **C){
@@ -35,6 +38,7 @@ void matmult_mnk(int m, int n, int k, double **A, double **B, double **C){
 		}
 	}
 }
+
 
 void matmult_mkn(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
@@ -91,12 +95,32 @@ void matmult_kmn(int m, int n, int k, double **A, double **B, double **C){
 	}
 }
 
+void matmult_blk(int m, int n, int l, double **A, double **B, double **C, int bb){
+	int i,j,k,ii,jj,kk;
+	double r;
+	//size of block from number of elements
+	bb=sqrt(bb);
+	//blocked multiplication
+	for(kk=0;kk<l;kk+=bb){
+		for(jj=0;jj<n;jj+=bb){
+			for(i=0;i<m;i++){
+				for(k=kk;k<min(kk+bb,l);k++){
+					r=A[i][k];
+					for(j=jj;j<min(jj+bb,n);j++){
+						C[i][j]+=r*B[k][j];
+					}
+				}
+			}
+		}
+	}
+}
+
 
 
 int main() {
 
 
-int m,n,k,i,j,l,sum=0; //dimensions
+int m,n,k,i,j,l,i1,j1,l1,p,q,r,s,bz; //dimensions
 double **A,**B,**C; //matrices
 
 m=3;
@@ -135,18 +159,35 @@ for(i=0;i<m;i++){
   C[i]=malloc(n *sizeof(double));
 }
 
-matmult_lib(m, n, k, A, B, C);
+matmult_blk(m, n, k, A, B, C, 9);
 
 /*
+s=2;
 //multiply A and B
-for(i=0; i<m; i++){
-  for(j=0; j<n; j++){
-    for(l=0; l<k; l++){
-      sum = sum + A[i][l]*B[l][j];
+for(p=0;p<s;p++){
+  for(q=0;q<s;q++){
+    C[p][q]=0;
+    for(r=0;r<m;r++){
+      C[p][q]=C[p][q]+A[p][r]*B[r][q];
     }
-    C[i][j] = sum;
-    sum = 0;
   }
+}
+*/
+
+/*
+bz=2;
+for(i1=0;i1<(n/bz);i1++){
+	for(j1=0;j1<(n/bz);j1++){
+		for(l1=0;l1<(n/bz);l1++){
+			for(i=i1;p<min(i1+bz-1,n);p++){
+				for(j=j1;j<min(j1+bz-1,n);j1++){
+					for(l=l1;l<min(l1+bz-1,n);l++){
+						C[i][j]=C[i][j]+A[i][l]*B[l][j];
+					}
+				}
+			}		
+		}
+	}
 }
 */
 
