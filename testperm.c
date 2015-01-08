@@ -97,16 +97,11 @@ int main() {
 
 
 int m,n,k,i,j,l,sum=0; //dimensions
-double **A,**B,**C, *a, *b, *c; //matrices
+double **A,**B,**C; //matrices
 
 m=3;
 n=2;
 k=5;
-
-//allocate memory
-a = (double *)malloc( m*k*sizeof( double ));
-b = (double *)malloc( k*n*sizeof( double ));
-c = (double *)malloc( m*n*sizeof( double ));
 
 //allocate memory
 A=malloc(m * sizeof(double *));
@@ -119,20 +114,6 @@ for(i=0;i<m;i++){
   for(j=0;j<k;j++){
     A[i][j]=10.0*(i+1)+(j+1);
   }
-}
-
-//make array
-for (i=0; i<m; i++) {
-  for (j=0; j<k; j++) {
-    a[j+i*k] = (double) 10.0*(i+1)+(j+1);
-    printf("%d ", i);
-  }
-}
-printf("\n");
-
-//print
-for(i=0;i<(m*k);i++){
-  printf("%d ", a[i]);
 }
 
 //allocate memory
@@ -154,6 +135,8 @@ for(i=0;i<m;i++){
   C[i]=malloc(n *sizeof(double));
 }
 
+matmult_lib(m, n, k, A, B, C);
+
 /*
 //multiply A and B
 for(i=0; i<m; i++){
@@ -167,16 +150,33 @@ for(i=0; i<m; i++){
 }
 */
 
-
-matmult_kmn(m, n,  k,  A, B, C);
-
-matmult_lib( m,  n,  k, A, B,  C);
+printf ("\n matrix A: \n");
 for(i=0;i<m;i++){
-  for(j=0;j<n;j++){
-    printf("%d ",C[i][j]);
+  for(j=0;j<k;j++){
+    printf("%lf ",A[i][j]);
   }
   printf("\n");
 }
+
+printf ("\n matrix B: \n");
+for(i=0;i<k;i++){
+  for(j=0;j<n;j++){
+    printf("%lf ",B[i][j]);
+  }
+  printf("\n");
+}
+
+printf ("\n matrix C: \n");
+for(i=0;i<m;i++){
+  for(j=0;j<n;j++){
+    printf("%lf ",C[i][j]);
+  }
+  printf("\n");
+}
+
+    free(A);
+    free(B);
+    free(C);
   
 }
 
