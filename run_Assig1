@@ -23,10 +23,10 @@ do
 			then
 				for order in "${MNK[@]}"
 				do
-					./matmult_f.gcc $mode $order $m $n $k >> "$mode"_"$order"."$LOGEXT"
+					./matmult_c.studio $mode $order $m $n $k >> "$mode"_"$order"."$LOGEXT"
 				done
 			else
- 				./matmult_f.gcc $mode $m $n $k >> $mode."$LOGEXT"
+ 				./matmult_c.studio $mode $m $n $k >> $mode."$LOGEXT"
 			fi
 			k=$(($k+20))
 			done
