@@ -54,8 +54,8 @@ LASTF=${FILES[$NLOGS]}
 
 ## FIRST GRAPH
 echo "set output \"MemoryUse.png\""     >> plotter
-echo "set xrange [0, $MaxMem]"          >> plotter
-echo "set yrange [0, $MaxMfl]"          >> plotter
+echo "set xrange [0: $MaxMem]"          >> plotter
+echo "set yrange [0: $MaxMfl]"          >> plotter
 echo "set xlabel \"Memory usage\""      >> plotter
 echo "set ylabel \"Megaflops per Sec\"" >> plotter
 echo " "                                >> plotter
@@ -74,8 +74,8 @@ done
 ## Second GRAPH This one should only check that everything is close
 ## to zero and that we're not making any mistakes
 echo "set output \"checker.png\""       >> plotter
-echo "set xrange [0, $MaxMem]"          >> plotter
-echo "set yrange [0, $MaxErr]"          >> plotter
+echo "set xrange [0: $MaxMem]"          >> plotter
+echo "set yrange [0: $MaxErr]"          >> plotter
 echo "set xlabel \"Memory usage\""      >> plotter
 echo "set ylabel \"Max Error   \""      >> plotter
 
