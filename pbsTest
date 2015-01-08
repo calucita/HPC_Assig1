@@ -1,0 +1,11 @@
+#!/bin/bash
+#PBS -q hpcintro
+#PBS -l feature=XeonE5-2680
+#PBS -l walltime=1:00
+#PBS -N log
+#PBS -m bae
+#PBS -M s140882@student.dtu.dk
+
+cd "$PBS_O_WORKDIR"
+./matmult_c.studio nat 10 10 10
+

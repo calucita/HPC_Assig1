@@ -2,7 +2,7 @@ TARGET	= libmatmult.so
 LIBSRCS	= libmatmult.c 
 LIBOBJS	= libmatmult.o
 
-OPT	= -g 
+OPT	= -g -fast -m64 -xO3 -xrestrict=%all -nprefetch_level=3
 PIC	= -fPIC
 
 CC	= suncc
