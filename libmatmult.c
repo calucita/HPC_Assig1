@@ -8,24 +8,11 @@
 void matmult_lib(int m, int n, int k, double **A, double **B, double **C){
 	double alpha, beta;
 	char transa, transb;
-	double **D;
 	int i,j;
-	//allocate memory
-	D=malloc(m * sizeof(double *));
-	for(i=0;i<m;i++){
-		  D[i]=malloc(n *sizeof(double));
-	}	
 	alpha = 1.0; beta = 0.0;
-	transa = 't', transb='t';
+	transa = 'n', transb='n';
   
-	dgemm(transa, transb, m, n, k, alpha, A[0], n, B[0], k, beta, D[0], n);
-	
-	double temp;
-	for ( i = 0; i < m ; i++){
-		for ( j = 0; j < n; j++){
-			C[i][j]=D[j][i];
-		}
-	}
+	dgemm(transa, transb, n, m, k, alpha, B[0], n, A[0], k, beta, C[0], n);
 		
 }
 
@@ -45,6 +32,7 @@ void matmult_mnk(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
 	for ( i = 0; i < m ; i++){
 		for ( j = 0; j < n; j++){
+			C[i][j]=0;
 			for ( t = 0; t < k ; t++){
 				C[i][j] += A[i][t]*B[t][j];
 			}	
@@ -54,6 +42,11 @@ void matmult_mnk(int m, int n, int k, double **A, double **B, double **C){
 
 void matmult_mkn(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
+	for ( i = 0; i < m ; i++){
+		for ( j = 0; j < n; j++){
+			C[i][j]=0;
+		}
+	}
 	for ( i = 0; i < m ; i++){
 		for ( t = 0; t < k ; t++){
 			for ( j = 0; j < n; j++){
@@ -65,7 +58,11 @@ void matmult_mkn(int m, int n, int k, double **A, double **B, double **C){
 
 void matmult_nmk(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
-	for ( j = 0; j < n; j++){
+	for ( i = 0; i < m ; i++){
+		for ( j = 0; j < n; j++){
+			C[i][j]=0;
+		}
+	}for ( j = 0; j < n; j++){
 		for ( i = 0; i < m ; i++){
 			for ( t = 0; t < k ; t++){
 				C[i][j] += A[i][t]*B[t][j];
@@ -76,7 +73,11 @@ void matmult_nmk(int m, int n, int k, double **A, double **B, double **C){
 
 void matmult_nkm(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
-	for ( j = 0; j < n; j++){
+	for ( i = 0; i < m ; i++){
+		for ( j = 0; j < n; j++){
+			C[i][j]=0;
+		}
+	}for ( j = 0; j < n; j++){
 		for ( t = 0; t < k ; t++){
 			for ( i = 0; i < m ; i++){
 				C[i][j] += A[i][t]*B[t][j];
@@ -87,7 +88,11 @@ void matmult_nkm(int m, int n, int k, double **A, double **B, double **C){
 
 void matmult_knm(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
-	for ( t = 0; t < k ; t++){
+	for ( i = 0; i < m ; i++){
+		for ( j = 0; j < n; j++){
+			C[i][j]=0;
+		}
+	}for ( t = 0; t < k ; t++){
 		for ( j = 0; j < n; j++){
 			for ( i = 0; i < m ; i++){
 				C[i][j] += A[i][t]*B[t][j];
@@ -98,7 +103,11 @@ void matmult_knm(int m, int n, int k, double **A, double **B, double **C){
 
 void matmult_kmn(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
-	for ( t = 0; t < k ; t++){
+	for ( i = 0; i < m ; i++){
+		for ( j = 0; j < n; j++){
+			C[i][j]=0;
+		}
+	}for ( t = 0; t < k ; t++){
 		for ( i = 0; i < m ; i++){
 			for ( j = 0; j < n; j++){
 				C[i][j] += A[i][t]*B[t][j];

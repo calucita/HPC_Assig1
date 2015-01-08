@@ -4,8 +4,7 @@
 #PBS -l feature=XeonX5550
 #PBS -l walltime=20:00
 LOOPS=10000
-OPTS=("nat" "lib" "blk")
-MNK=("nmk" "nkm" "mnk" "mkn" "kmn" "knm") 
+OPTS=("nat" "lib" "blk" "nmk" "nkm" "mnk" "mkn" "kmn" "knm") 
 LOGEXT=dat
 /bin/rm -f *.$LOGEXT
 for mode in "${OPTS[@]}"
@@ -19,15 +18,7 @@ do
 		k=20
 			while [ $k -lt 100 ]
 			do
-			if [ "nat" = "$mode" ]
-			then
-				for order in "${MNK[@]}"
-				do
-					./matmult_c.studio $mode $order $m $n $k >> "$mode"_"$order"."$LOGEXT"
-				done
-			else
  				./matmult_c.studio $mode $m $n $k >> $mode."$LOGEXT"
-			fi
 			k=$(($k+20))
 			done
 		m=$(($m+20))
