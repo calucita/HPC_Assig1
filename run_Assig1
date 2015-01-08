@@ -65,9 +65,9 @@ for i in ${FILES[@]}
 do
 	if   [ "$i" = "$LASTF" ]
 	then
-		echo "\"$i\" using 1:2 with linespoints" >> plotter
+		echo "\"$i\" using 1:2 with points" >> plotter
 	else
-		echo "\"$i\" using 1:2 with linespoints, \\" >> plotter
+		echo "\"$i\" using 1:2 with points, \\" >> plotter
 	fi
 done
 
