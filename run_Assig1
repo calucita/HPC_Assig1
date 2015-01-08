@@ -1,4 +1,7 @@
 #!/bin/bash
+#POTATO
+
+
 #PBS -q hpcintro
 #PBS -N log
 #PBS -l feature=XeonX5550
@@ -23,10 +26,10 @@ do
 			then
 				for order in "${MNK[@]}"
 				do
-					./matmult_f.gcc $mode $order $m $n $k >> "$mode"_"$order"."$LOGEXT"
+		echo	"		./matmult_f.gcc $mode $order $m $n $k ">> "$mode"_"$order"."$LOGEXT"
 				done
 			else
-				./matmult_f.gcc $mode $m $n $k >> $mode."$LOGEXT"
+echo "				./matmult_f.gcc $mode $m $n $k" >> $mode."$LOGEXT"
 			fi
 			k=$(($k+20))
 			done
@@ -35,7 +38,57 @@ do
 	n=$(($n+20))
 	done
 done
-echo $count
+
+#Now it is time to make the file to plot the data!
+rm -f plotter
+echo "set terminal png size 800,600" >> plotter
+echo "set key ins vert"              >> plotter
+echo "set key right top"             >> plotter
+
+
+# Rage specific for memory and time and aux VARS
+MaxMem=$( cat *.$LOGEXT | awk '{ print $1 }' | sort -nr | head -1 )
+MaxMfl=$( cat *.$LOGEXT | awk '{ print $2 }' | sort -nr | head -1 )
+MaxErr=$( cat *.$LOGEXT | awk '{ print $3 }' | sort -nr | head -1 )
+
+FILES=(*.$LOGEXT)
+NLOGS=$((${#FILES[@]}-1))
+LASTF=${FILES[$NLOGS]}
+
+## FIRST GRAPH
+echo "set output \"MemoryUse.png\""   >> plotter
+echo "set xrange [0, $MaxMem]"        >> plotter
+echo "set yrange [0, $MaxMfl]"        >> plotter
+echo "plot \\"                        >> plotter
+for i in ${FILES[@]}
+do
+	if   [ "$i" = "$LASTF" ]
+	then
+		echo "\"$i\" using 1:2 with linespoints" >> plotter
+	else
+		echo "\"$i\" using 1:2 with linespoints, \\" >> plotter
+	fi
+done
+
+## Second GRAPH This one should only check that everything is close
+## to zero and that we're not making any mistakes
+echo "set output \"checker.png\""   >> plotter
+echo "set xrange [0, $MaxMem]"        >> plotter
+echo "set yrange [0, $MaxErr]"        >> plotter
+echo "plot \\"                        >> plotter
+for i in ${FILES[@]}
+do
+	if   [ "$i" = "$LASTF" ]
+	then
+		echo "\"$i\" using 1:3 with linespoints" >> plotter
+	else
+		echo "\"$i\" using 1:3 with linespoints, \\" >> plotter
+	fi
+done
+
+
+
+
 # time to say 'Good bye' ;-)
 #
 exit 0
