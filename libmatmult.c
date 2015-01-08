@@ -8,11 +8,24 @@
 void matmult_lib(int m, int n, int k, double **A, double **B, double **C){
 	double alpha, beta;
 	char transa, transb;
-	
+	double **D;
+	int i,j;
+	//allocate memory
+	D=malloc(m * sizeof(double *));
+	for(i=0;i<m;i++){
+		  D[i]=malloc(n *sizeof(double));
+	}	
 	alpha = 1.0; beta = 0.0;
 	transa = 't', transb='t';
   
-	dgemm(transa, transb, m, n, k, alpha, A[0], k, B[0], n, beta, C[0], m);
+	dgemm(transa, transb, m, n, k, alpha, A[0], n, B[0], k, beta, D[0], n);
+	
+	double temp;
+	for ( i = 0; i < m ; i++){
+		for ( j = 0; j < n; j++){
+			C[i][j]=D[j][i];
+		}
+	}
 		
 }
 
@@ -20,8 +33,9 @@ void matmult_nat(int m, int n, int k, double **A, double **B, double **C){
 	int i,j,t;
 	for ( i = 0; i < m ; i++){
 		for ( j = 0; j < n; j++){
+			C[i][j]=0;
 			for ( t = 0; t < k ; t++){
-				C[i][j] += A[i][t]*B[t][j];
+				C[i][j] = C[i][j]+ A[i][t]*B[t][j];
 			}	
 		}
 	}
