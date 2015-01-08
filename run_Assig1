@@ -1,7 +1,4 @@
 #!/bin/bash
-#POTATO
-
-
 #PBS -q hpcintro
 #PBS -N log
 #PBS -l feature=XeonX5550
@@ -56,10 +53,14 @@ NLOGS=$((${#FILES[@]}-1))
 LASTF=${FILES[$NLOGS]}
 
 ## FIRST GRAPH
-echo "set output \"MemoryUse.png\""   >> plotter
-echo "set xrange [0, $MaxMem]"        >> plotter
-echo "set yrange [0, $MaxMfl]"        >> plotter
-echo "plot \\"                        >> plotter
+echo "set output \"MemoryUse.png\""     >> plotter
+echo "set xrange [0, $MaxMem]"          >> plotter
+echo "set yrange [0, $MaxMfl]"          >> plotter
+echo "set xlabel \"Memory usage\""      >> plotter
+echo "set ylabel \"Megaflops per Sec\"" >> plotter
+echo " "                                >> plotter
+
+echo "plot \\"                          >> plotter
 for i in ${FILES[@]}
 do
 	if   [ "$i" = "$LASTF" ]
@@ -72,21 +73,25 @@ done
 
 ## Second GRAPH This one should only check that everything is close
 ## to zero and that we're not making any mistakes
-echo "set output \"checker.png\""   >> plotter
-echo "set xrange [0, $MaxMem]"        >> plotter
-echo "set yrange [0, $MaxErr]"        >> plotter
-echo "plot \\"                        >> plotter
+echo "set output \"checker.png\""       >> plotter
+echo "set xrange [0, $MaxMem]"          >> plotter
+echo "set yrange [0, $MaxErr]"          >> plotter
+echo "set xlabel \"Memory usage\""      >> plotter
+echo "set ylabel \"Max Error   \""      >> plotter
+
+
+echo "plot \\"                          >> plotter
 for i in ${FILES[@]}
 do
 	if   [ "$i" = "$LASTF" ]
 	then
-		echo "\"$i\" using 1:3 with linespoints" >> plotter
+		echo "\"$i\" using 1:3 with linespoints"     >> plotter
 	else
 		echo "\"$i\" using 1:3 with linespoints, \\" >> plotter
 	fi
 done
 
-
+gnuplot plotter
 
 
 # time to say 'Good bye' ;-)
