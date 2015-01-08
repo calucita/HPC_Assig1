@@ -1,0 +1,15 @@
+set terminal png size 800,600
+set key ins vert
+set key right top
+set output "MemoryUse.png"
+set xrange [0, ./matmult_f.gcc]
+set yrange [0, nat]
+plot \
+"blk.dat" using 1:2 with linespoints, \
+"lib.dat" using 1:2 with linespoints, \
+"nat_kmn.dat" using 1:2 with linespoints, \
+"nat_knm.dat" using 1:2 with linespoints, \
+"nat_mkn.dat" using 1:2 with linespoints, \
+"nat_mnk.dat" using 1:2 with linespoints, \
+"nat_nkm.dat" using 1:2 with linespoints, \
+"nat_nmk.dat" using 1:2 with linespoints
