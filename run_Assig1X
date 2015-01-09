@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -q hpcintro
 #PBS -l feature=XeonX5550
-#PBS -l walltime=40:00
+#PBS -l walltime=3:40:00
 #PBS -N log
 #PBS -m bae
 #PBS -M s140882@student.dtu.dk
@@ -14,14 +14,14 @@ echo $CPUTYPE
 cd "$PBS_O_WORKDIR"
 for mode in "${OPTS[@]}"
 do
-	n=40
-	while [ $n -lt 1000 ] 
+	n=100
+	while [ $n -lt 7000 ] 
 	do
-	m=40
-		while [ $m -lt 1000 ]
+	m=100
+		while [ $m -lt 7000 ]
 		do	
-		k=40
-			while [ $k -lt 1000 ]
+		k=100
+			while [ $k -lt 7000 ]
 			do
 			if [ "$mode" = "blk" ]
 				then
@@ -29,13 +29,13 @@ do
 				else	
 					./matmult_c.studio $mode $m $n $k     >> "X$mode"."$LOGEXT"
 				fi
-			k=$(($k+40))
+			k=$(($k+2000))
 			count=$(($count+1))
 			done
-		m=$(($m+40))
+		m=$(($m+2000))
 		echo "I have done $count calculations"
 		done
-	n=$(($n+40))
+		n=$(($n+2000))
 	done
 done
 

@@ -1,0 +1,8 @@
+#!/bin/bash
+OPTS=("nat" "lib" "blk" "nmk" "nkm" "mnk" "mkn" "kmn" "knm")
+cd ~/HPC_15/Assign1 
+ls
+for mode in "${OPTS[@]}"
+do
+	echo "./run_Assig1_one $mode" | qsub
+done
